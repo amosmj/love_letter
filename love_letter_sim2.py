@@ -28,6 +28,8 @@ class Card:
         ''' This is what will be called when the player plays this card. '''
         pass
 
+    __repr__ = __str__
+
 
 class Guard(Card):
     def __init__(self):
@@ -144,13 +146,16 @@ class Player:
 
     def draw_a_card(self, deck):
         self.hand.append(deck.draw_a_card())
+        self.check_hand()
         # print("{} holds {}".format(self.id,self.hand))
 
     def check_hand(self):
-        if Card.Countess in self.hand:
-            print("you have the countess")
-            if Card.King or Card.Prince in self.hand:
-                print("you have to get rid of the countess")
+        for card in self.hand:
+            if isinstance(card, Countess):
+                print(self.hand)
+                for c in self.hand:
+                    if isinstance(c, King) or isinstance(c, Prince):
+                        print("have to discard and end turn")
 
 
 class Game:
@@ -171,16 +176,13 @@ print(game_deck)
 game_deck.draw_a_card()
 playerOne.draw_a_card(game_deck)
 playerTwo.draw_a_card(game_deck)
-# while not newGame.over:
-'''
-for i in range(5):
-    playerOne.draw_a_card()
+while not newGame.over:
+    playerOne.draw_a_card(game_deck)
     playerOne.hand.pop()
-    playerTwo.draw_a_card()
+    playerTwo.draw_a_card(game_deck)
     playerTwo.hand.pop()
-'''
-# print("yep, it's a loop")
-# newGame.over = True
+    if len(game_deck.game_deck) <= 2:
+        newGame.over = True
 
 print("The Game is Over")
 
