@@ -16,6 +16,7 @@ import random
 class Card:
     '''  NOTE: we should really make this class an abstract base class, but I'm
     skipping that step for the moment.  JHA 1/16/18 '''
+
     def __init__(self, name, power):
         self.name = name
         self.power = power
@@ -127,8 +128,8 @@ class Deck:
     # I've debated if this is a deck action or a player action
     # I've settled on deck for now but could see this going the other way
     def draw_a_card(self):
-        drawn_card = self.game_deck[0]
-        self.game_deck.pop()
+        drawn_card = self.game_deck[len(self.game_deck) - 1]
+        self.game_deck.pop(len(self.game_deck) - 1)
         print("You drew a {}".format(drawn_card))
         return drawn_card
 
@@ -145,11 +146,18 @@ class Player:
         self.hand.append(deck.draw_a_card())
         # print("{} holds {}".format(self.id,self.hand))
 
+    def check_hand(self):
+        if Card.Countess in self.hand:
+            print("you have the countess")
+            if Card.King or Card.Prince in self.hand:
+                print("you have to get rid of the countess")
+
 
 class Game:
     def __init__(self, players):
         self.over = False
         self.start_player = random.choice(players)
+        # Realzed that I'm totally not using the above
 
 
 print("Welcome to Love Letter Simulator")
@@ -160,10 +168,17 @@ playerTwo = Player("Bob")
 newGame = Game([playerOne, playerTwo])
 game_deck = Deck()
 print(game_deck)
-# game_deck.draw_a_card()
-# playerOne.draw_a_card(game_deck)
-# playerTwo.draw_a_card(game_deck)
+game_deck.draw_a_card()
+playerOne.draw_a_card(game_deck)
+playerTwo.draw_a_card(game_deck)
 # while not newGame.over:
+'''
+for i in range(5):
+    playerOne.draw_a_card()
+    playerOne.hand.pop()
+    playerTwo.draw_a_card()
+    playerTwo.hand.pop()
+'''
 # print("yep, it's a loop")
 # newGame.over = True
 
