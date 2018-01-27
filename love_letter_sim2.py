@@ -179,10 +179,11 @@ class Player:
         # specifically designed to deal with the Countess
         for card in self.hand:
             if isinstance(card, Countess):
-                print(self.hand)
+                # print(self.hand)
                 for c in self.hand:
                     if isinstance(c, King) or isinstance(c, Prince):
                         print("have to discard and end turn")
+                        self.hand.remove(card)
 
     def play_card(card_name, target_name=""):
         pass
@@ -190,10 +191,6 @@ class Player:
         # a card object. Many cards need a target but not all
         # I'm guessing I could do it better than the empty string
         # I have above but that's what I have now
-
-    def discard_card(card_name):
-        pass
-        # this is for when the Prince is played or the Countess fires
 
     def compare_card(target):
         pass
