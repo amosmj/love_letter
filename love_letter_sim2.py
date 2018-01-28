@@ -22,8 +22,21 @@ class Card:
     def __str__(self):
         return "{:8}:\t{}".format(self.name, self.power)
 
-    def action(self):
-        print("do {} action".format(self.name))
+    def action(self, player, other_card_in_hand):
+        ''' Mike - this is the thought I had, but it's not playing out as
+        cleanly as I would have hoped.  THe part of this whole thing that I
+        don't have in my head is "how does the player decide which card to play
+        against which other player AND which guess to make".  One interesting
+        thought: I'm used to C++ where ALL overridden functions in subclasses
+        need to have the same parameters (unless you do something special).
+        It seems the action method on each card could be unique.  The player
+        already will need to know which card she is playing and therefore
+        can send the proper parameters (i.e. Guard will take (player, guess)
+        while priest will just take player.)  The return values might need
+        to be different as well.  Priest will return card value, others  will
+        return ???
+        '''
+        # print("do {} action".format(self.name))
         pass
 
     # allows me to print a list of cards and have them be pretty
@@ -39,8 +52,8 @@ class Guard(Card):
     def __init__(self):
         super().__init__("Guard", 1)
 
-    # def action(self):
-        # print("do guard action")
+    def action(self, player, other_card_in_hand):
+        print("do guard action")
 
 
 class Priest(Card):
@@ -50,7 +63,7 @@ class Priest(Card):
     def __init__(self):
         super().__init__("Priest", 2)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do priest action")
 
 
@@ -62,7 +75,7 @@ class Baron(Card):
     def __init__(self):
         super().__init__("Baron", 3)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do baron action")
 
 
@@ -73,7 +86,7 @@ class Handmaid(Card):
     def __init__(self):
         super().__init__("Handmaid", 4)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do Handmaid action")
 
 
@@ -85,17 +98,18 @@ class Prince(Card):
     def __init__(self):
         super().__init__("Prince", 5)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do Prince action")
 
 
 class King(Card):
-    '''When this card is played, its player trades hands with any other player.'''
+    '''When this card is played, its player trades hands with any other
+    player.'''
 
     def __init__(self):
         super().__init__("King", 6)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do King action")
 
 
@@ -106,17 +120,18 @@ class Countess(Card):
     def __init__(self):
         super().__init__("Countess", 7)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do Countess action")
 
 
 class Princess(Card):
-    '''If a player plays this card for any reason, they are eliminated from the round.'''
+    '''If a player plays this card for any reason, they are eliminated from the
+    round.'''
 
     def __init__(self):
         super().__init__("Princess", 8)
 
-    def action(self):
+    def action(self, player, other_card_in_hand):
         print("do Princess action")
 
 
@@ -149,8 +164,11 @@ class Deck:
     def __str__(self):
         result = ""
         for card in self.game_deck:
-            result += str(card) + "\n"
+            result += "\t{0}\n".format(card)
         return result
+
+    def __len__(self):
+        return len(self.game_deck)
 
     # I've debated if this is a deck action or a player action
     # I've settled on deck for now but could see this going the other way
@@ -168,12 +186,12 @@ class Player:
         self.hand = []
         self.protected = False
         self.eliminated = False
-        print("{} is a player".format(id))
+        # print("{} is a player".format(id))
 
     def draw_a_card(self, deck):
         self.hand.append(deck.draw_a_card())
         self.check_hand()
-        print("{} holds {}".format(self.id, self.hand))
+        print("{} ({})holds {}".format(self.id, self.eliminated, self.hand))
 
     def check_hand(self):
         # specifically designed to deal with the Countess
@@ -183,14 +201,21 @@ class Player:
                 for c in self.hand:
                     if isinstance(c, King) or isinstance(c, Prince):
                         print("have to discard and end turn")
+                        # JHA - we have to do something different here.
                         self.hand.remove(card)
 
-    def play_card(card_name, target_name=""):
-        pass
-        # I think playing a card is a player action that invokes
+    def play_card(self):
+        # MA - I think playing a card is a player action that invokes
         # a card object. Many cards need a target but not all
         # I'm guessing I could do it better than the empty string
         # I have above but that's what I have now
+        # JHA - I think the player object should be the one deciding which
+        # card to play.  Therefore shouldn't need the params
+
+        # for now, just removing first card
+        played_card = self.hand[0]
+        print("{0} played {1}".format(self.id, played_card))
+        self.hand.pop(0)
 
     def compare_card(target):
         pass
@@ -198,16 +223,70 @@ class Player:
         # compare cards and determine who is eliminated
         # eliminate player
 
+    def __str__(self):
+        if len(self.hand) == 1:
+            return "{0} holds {1}".format(self.id, self.hand[0])
+        else:
+            return "{0} holds {1} and {2}".format(self.id, self.hand[0],
+                                                  self.hand[1])
+
 
 class Game:
-    def __init__(self, players):
-        self.over = False
-        self.start_player = random.choice(players)
-        # This varies turn order and makes it easier to loop through
-        # the players sequentially. I still have it in the back of
-        # my head that I eventually will add multiplayer support
-        random.shuffle(players)
-        self.turn_order = itertools.cycle(players)
+    def __init__(self, *args):
+        # initialze deck
+        self.deck = Deck()
+
+        # initialize players
+        self.players = list()
+        for arg in args:
+            player = Player(arg)
+            player.draw_a_card(self.deck)
+            self.players.append(player)
+        self.start_player = random.choice(self.players)
+
+        random.shuffle(self.players)
+        self.turn_order = itertools.cycle(self.players)
+
+    def more_than_one_player(self):
+        # JHA - I suspect there's a fancier way to do this
+        foundFirst = False
+        for player in self.players:
+            if not player.eliminated:
+                if foundFirst:
+                    return True  # found second active player
+                foundFirst = True
+        return False
+
+    def take_turn(self):
+        player = next(self.turn_order)
+        print("START TURN", player.id)
+        if player.eliminated is False:
+            # JHA - seems to me that the action a prince would have would be
+            # to call 'discard()' on other player.  That player would be
+            # responsible for playing card, and if princess: elminated =
+            # True, else draw_card()
+            if len(player.hand) is 0:  # deal with Prince
+                player.draw_a_card(self.deck)
+            player.draw_a_card(self.deck)
+            # integers.  You're getting away with it due to the odd way that
+            # Python treats ints < 256
+            # if len(player.hand) is 2:  # deal with Countess
+            # you dealt with countess when you drew the card?
+            # player logic here
+            # player.hand.pop(0)
+        # test for game over conditions: only one player or deck empty
+        return self.more_than_one_player() and len(self.deck) > 0
+
+    def __str__(self):
+        retval = "Players:\n"
+        for player in self.players:
+            retval += "\t{}\n".format(player)
+        retval += "Deck:\n{}".format(self.deck)
+        return retval
+
+    def __repr__(self):
+        ''' JHA probably should do something better than this '''
+        return self.__str__()
 
 
 print("Welcome to Love Letter Simulator")
@@ -223,32 +302,11 @@ for player in range(int(player_count)):
     players.append(Player(player_name))
 '''
 # This next line does all of the stuff above but just
-# forces the players to be Alice and Bod
-players = [Player("Alice")]
-players.append(Player("Bob"))
+# forces the players to be a fixed set
+newGame = Game("Alice", "Bob", "Carol")
+print(newGame)
 
-# create a game object
-# create the deck and randomize it
-game = Game(players)
-game_deck = Deck()
-# print(game_deck)
-for player in players:
-    player.draw_a_card(game_deck)
-for player in game.turn_order:
-    if player.eliminated is False:
-        if len(player.hand) is 0:  # deal with Prince
-            player.draw_a_card(game_deck)
-        player.draw_a_card(game_deck)
-        if len(player.hand) is 2:  # deal with Countess
-            # player logic here
-            player.hand.pop(0)
-        # test for game over conditions
-        #  Deck empty
-        if len(game_deck.game_deck) == 0:
-            game.over = True
-        #  all players but one eliminated
-    if game.over is True:
-        break
-
+while newGame.take_turn():
+    print(newGame)
 
 print("The Game is Over")
