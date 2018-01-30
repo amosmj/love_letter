@@ -69,7 +69,7 @@ class Baron(Card):
 
     def action(self, player, other_card_in_hand):
         print("do baron action")
-
+        #compare cards and eliminate one player unless its a draw
 
 class Handmaid(Card):
     '''When this card is played, the player cannot be affected by any

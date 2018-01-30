@@ -80,7 +80,7 @@ class Player:
                         # JHA - we have to do something different here.
                         self.hand.remove(card)
 
-    def play_card(self):
+    def play_card(self,other_player = None):
         # MA - I think playing a card is a player action that invokes
         # a card object. Many cards need a target but not all
         # I'm guessing I could do it better than the empty string
@@ -90,14 +90,9 @@ class Player:
 
         # for now, just removing first card
         played_card = self.hand[0]
+        played_card.action(self,other_player)
         print("{0} played {1}".format(self.id, played_card))
         self.hand.pop(0)
-
-    def compare_card(target):
-        pass
-        # discard Baron
-        # compare cards and determine who is eliminated
-        # eliminate player
 
     def __str__(self):
         if len(self.hand) == 1:
