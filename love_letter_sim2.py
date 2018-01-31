@@ -95,12 +95,7 @@ class Player:
         self.hand.pop(0)
 
     def __str__(self):
-        if len(self.hand) == 1:
-            return "{0} holds {1}".format(self.id, self.hand[0])
-        else:
-            return "{0} holds {1} and {2}".format(self.id, self.hand[0],
-                                                  self.hand[1])
-
+        return  "{0} holds {1}".format(self.id, ' and '.join(map(str,self.hand)))
 
 class Game:
     def __init__(self, *args):
