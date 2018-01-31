@@ -3,6 +3,8 @@
 """
 This is a supporting module of love_letter_sim2 providing class description of the cards
 """
+from collections import namedtuple
+
 class Card:
     '''  NOTE: we should really make this class an abstract base class, but I'm
     skipping that step for the moment.  JHA 1/16/18 '''
@@ -56,7 +58,6 @@ class Priest(Card):
         super().__init__("Priest", 2)
 
     def action(self, player, other_card_in_hand):
-        
         print("do priest action")
 
 
@@ -127,3 +128,5 @@ class Princess(Card):
 
     def action(self, player, other_card_in_hand):
         print("do Princess action")
+
+InvalidActionError = namedtuple("InvalidActionError","errorMessage")

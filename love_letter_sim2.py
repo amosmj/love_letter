@@ -9,7 +9,7 @@ and to try and test my theory that Love Letter is very nearly random
 """
 import random
 import itertools
-from love_letter_cards import Guard,Priest,Baron,Handmaid,Prince,King,Countess,Princess 
+from love_letter_cards import Guard,Priest,Baron,Handmaid,Prince,King,Countess,Princess, InvalidActionError 
 
 class Deck:
     def __init__(self, player_count=2):
@@ -55,7 +55,6 @@ class Deck:
         # print("You drew a {}".format(drawn_card))
         return drawn_card
 
-
 class Player:
     def __init__(self, id):
         self.id = id
@@ -89,9 +88,15 @@ class Player:
         # card to play.  Therefore shouldn't need the params
         if not played_card:
             played_card = self.hand[0]
-        played_card.action(self,other_player)
+        try:
+            played_card.action(self,other_player)
+        except InvalidActionError as error:
+            print('Ivalid Action: ' + error.errorMessage)
+            # for now invalid action results in a missed round, the card played has no effect. We did play the game this way 
+            # a few times ("muhaha, you can't do that I am protected") but eventually we should loop it until valid action
+
         print("{0} played {1}".format(self.id, played_card))
-        self.hand.pop(0)
+        self.hand.pop(self.hand.index(played_card))
 
     def __str__(self):
         return  "{0} holds {1}".format(self.id, ' and '.join(map(str,self.hand)))
