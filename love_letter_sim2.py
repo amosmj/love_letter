@@ -80,16 +80,15 @@ class Player:
                         # JHA - we have to do something different here.
                         self.hand.remove(card)
 
-    def play_card(self,other_player = None):
+    def play_card(self,played_card = None,other_player = None):
         # MA - I think playing a card is a player action that invokes
         # a card object. Many cards need a target but not all
         # I'm guessing I could do it better than the empty string
         # I have above but that's what I have now
         # JHA - I think the player object should be the one deciding which
         # card to play.  Therefore shouldn't need the params
-
-        # for now, just removing first card
-        played_card = self.hand[0]
+        if not played_card:
+            played_card = self.hand[0]
         played_card.action(self,other_player)
         print("{0} played {1}".format(self.id, played_card))
         self.hand.pop(0)
@@ -136,6 +135,7 @@ class Game:
             if len(player.hand) is 0:  # deal with Prince
                 player.draw_a_card(self.deck)
             player.draw_a_card(self.deck)
+            player.play_card()
             # integers.  You're getting away with it due to the odd way that
             # Python treats ints < 256
             # if len(player.hand) is 2:  # deal with Countess

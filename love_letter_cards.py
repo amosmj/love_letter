@@ -56,6 +56,7 @@ class Priest(Card):
         super().__init__("Priest", 2)
 
     def action(self, player, other_card_in_hand):
+        
         print("do priest action")
 
 
