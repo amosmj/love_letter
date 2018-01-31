@@ -79,6 +79,7 @@ class Handmaid(Card):
         super().__init__("Handmaid", 4)
 
     def action(self, player, other_card_in_hand):
+        player.protected = True
         print("do Handmaid action")
 
 

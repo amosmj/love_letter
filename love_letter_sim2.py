@@ -130,12 +130,14 @@ class Game:
 
     def take_turn(self):
         player = next(self.turn_order)
+        player.protected = False # effect of a previously played Handmaid expires
         print("START TURN", player.id)
         if player.eliminated is False:
             # JHA - seems to me that the action a prince would have would be
             # to call 'discard()' on other player.  That player would be
             # responsible for playing card, and if princess: elminated =
             # True, else draw_card()
+            # GM: I agree, if two princes are played on the same player one after the other, the current check below is "too late".
             if len(player.hand) is 0:  # deal with Prince
                 player.draw_a_card(self.deck)
             player.draw_a_card(self.deck)
