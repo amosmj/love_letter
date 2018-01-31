@@ -3,7 +3,6 @@
 """
 This is a supporting module of love_letter_sim2 providing class description of the cards
 """
-from collections import namedtuple
 
 class Card:
     '''  NOTE: we should really make this class an abstract base class, but I'm
