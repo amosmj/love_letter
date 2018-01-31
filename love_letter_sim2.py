@@ -88,8 +88,10 @@ class Player:
         # card to play.  Therefore shouldn't need the params
         if not played_card:
             played_card = self.hand[0]
+        if not other_player:
+            other_player = self
         try:
-            played_card.action(self,other_player)
+            played_card.action(other_player)
         except InvalidActionError as error:
             print('Ivalid Action: ' + error.errorMessage)
             # for now invalid action results in a missed round, the card played has no effect. We did play the game this way 
