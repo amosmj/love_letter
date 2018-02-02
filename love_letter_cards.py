@@ -3,6 +3,7 @@
 """
 This is a supporting module of love_letter_sim2 providing class description of the cards
 """
+
 class Card:
     '''  NOTE: we should really make this class an abstract base class, but I'm
     skipping that step for the moment.  JHA 1/16/18 '''
@@ -14,7 +15,7 @@ class Card:
     def __str__(self):
         return "{:8}:\t{}".format(self.name, self.power)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         ''' Mike - this is the thought I had, but it's not playing out as
         cleanly as I would have hoped.  THe part of this whole thing that I
         don't have in my head is "how does the player decide which card to play
@@ -44,7 +45,7 @@ class Guard(Card):
     def __init__(self):
         super().__init__("Guard", 1)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do guard action")
 
 
@@ -55,7 +56,7 @@ class Priest(Card):
     def __init__(self):
         super().__init__("Priest", 2)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do priest action")
 
 
@@ -67,7 +68,7 @@ class Baron(Card):
     def __init__(self):
         super().__init__("Baron", 3)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do baron action")
         #compare cards and eliminate one player unless its a draw
 
@@ -78,8 +79,8 @@ class Handmaid(Card):
     def __init__(self):
         super().__init__("Handmaid", 4)
 
-    def action(self, player, other_card_in_hand):
-        player.protected = True
+    def action(self, other_player):
+        other_player.protected = True
         print("do Handmaid action")
 
 
@@ -91,7 +92,7 @@ class Prince(Card):
     def __init__(self):
         super().__init__("Prince", 5)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do Prince action")
 
 
@@ -102,7 +103,7 @@ class King(Card):
     def __init__(self):
         super().__init__("King", 6)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do King action")
 
 
@@ -113,7 +114,7 @@ class Countess(Card):
     def __init__(self):
         super().__init__("Countess", 7)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do Countess action")
 
 
@@ -124,5 +125,11 @@ class Princess(Card):
     def __init__(self):
         super().__init__("Princess", 8)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do Princess action")
+
+class InvalidActionError(Exception):
+    ''' Exception that is thrown when a player attempts an invalid action such as attacking another player protected by Handmaid.'''    
+    def __init__(self, message):
+        self.errorMessage = message
+

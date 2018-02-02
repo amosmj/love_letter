@@ -9,7 +9,7 @@ and to try and test my theory that Love Letter is very nearly random
 """
 import random
 import itertools
-from love_letter_cards import Guard,Priest,Baron,Handmaid,Prince,King,Countess,Princess 
+from love_letter_cards import Guard,Priest,Baron,Handmaid,Prince,King,Countess,Princess, InvalidActionError 
 
 class Deck:
     def __init__(self, player_count=2):
@@ -55,7 +55,6 @@ class Deck:
         # print("You drew a {}".format(drawn_card))
         return drawn_card
 
-
 class Player:
     def __init__(self, id):
         self.id = id
@@ -80,19 +79,26 @@ class Player:
                         # JHA - we have to do something different here.
                         self.hand.remove(card)
 
-    def play_card(self,other_player = None):
+    def play_card(self,played_card = None,other_player = None):
         # MA - I think playing a card is a player action that invokes
         # a card object. Many cards need a target but not all
         # I'm guessing I could do it better than the empty string
         # I have above but that's what I have now
         # JHA - I think the player object should be the one deciding which
         # card to play.  Therefore shouldn't need the params
+        if not played_card:
+            played_card = self.hand[0]
+        if not other_player:
+            other_player = self
+        try:
+            played_card.action(other_player)
+        except InvalidActionError as error:
+            print('Ivalid Action: ' + error.errorMessage)
+            # for now invalid action results in a missed round, the card played has no effect. We did play the game this way 
+            # a few times ("muhaha, you can't do that I am protected") but eventually we should loop it until valid action
 
-        # for now, just removing first card
-        played_card = self.hand[0]
-        played_card.action(self,other_player)
         print("{0} played {1}".format(self.id, played_card))
-        self.hand.pop(0)
+        self.hand.pop(self.hand.index(played_card))
 
     def __str__(self):
         return  "{0} holds {1}".format(self.id, ' and '.join(map(str,self.hand)))
@@ -136,6 +142,7 @@ class Game:
             if len(player.hand) is 0:  # deal with Prince
                 player.draw_a_card(self.deck)
             player.draw_a_card(self.deck)
+            player.play_card()
             # integers.  You're getting away with it due to the odd way that
             # Python treats ints < 256
             # if len(player.hand) is 2:  # deal with Countess
