@@ -33,7 +33,7 @@ class Guard(Card):
     def __init__(self):
         super().__init__("Guard", 1)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do guard action")
 
 
@@ -44,7 +44,7 @@ class Priest(Card):
     def __init__(self):
         super().__init__("Priest", 2)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do priest action")
 
 
@@ -56,7 +56,7 @@ class Baron(Card):
     def __init__(self):
         super().__init__("Baron", 3)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do baron action")
         #compare cards and eliminate one player unless its a draw
 
@@ -67,7 +67,7 @@ class Handmaid(Card):
     def __init__(self):
         super().__init__("Handmaid", 4)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         player.protected = True
         print("do Handmaid action")
 
@@ -80,7 +80,7 @@ class Prince(Card):
     def __init__(self):
         super().__init__("Prince", 5)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do Prince action")
 
 
@@ -91,7 +91,7 @@ class King(Card):
     def __init__(self):
         super().__init__("King", 6)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do King action")
 
 
@@ -102,7 +102,7 @@ class Countess(Card):
     def __init__(self):
         super().__init__("Countess", 7)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do Countess action")
 
 
@@ -113,7 +113,7 @@ class Princess(Card):
     def __init__(self):
         super().__init__("Princess", 8)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         print("do Princess action")
 
 
