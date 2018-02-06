@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 """
-This is a supporting module of love_letter_sim2 providing class description of the cards
+Cards for Love Letters Game.
 """
+
 
 class Card:
     '''  NOTE: we should really make this class an abstract base class, but I'm
@@ -15,20 +16,7 @@ class Card:
     def __str__(self):
         return "{:8}:\t{}".format(self.name, self.power)
 
-    def action(self, other_player):
-        ''' Mike - this is the thought I had, but it's not playing out as
-        cleanly as I would have hoped.  THe part of this whole thing that I
-        don't have in my head is "how does the player decide which card to play
-        against which other player AND which guess to make".  One interesting
-        thought: I'm used to C++ where ALL overridden functions in subclasses
-        need to have the same parameters (unless you do something special).
-        It seems the action method on each card could be unique.  The player
-        already will need to know which card she is playing and therefore
-        can send the proper parameters (i.e. Guard will take (player, guess)
-        while priest will just take player.)  The return values might need
-        to be different as well.  Priest will return card value, others  will
-        return ???
-        '''
+    def action(self, player, other_card_in_hand):
         # print("do {} action".format(self.name))
         pass
 
@@ -45,7 +33,7 @@ class Guard(Card):
     def __init__(self):
         super().__init__("Guard", 1)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do guard action")
 
 
@@ -56,7 +44,7 @@ class Priest(Card):
     def __init__(self):
         super().__init__("Priest", 2)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do priest action")
 
 
@@ -68,7 +56,7 @@ class Baron(Card):
     def __init__(self):
         super().__init__("Baron", 3)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do baron action")
         #compare cards and eliminate one player unless its a draw
 
@@ -79,8 +67,8 @@ class Handmaid(Card):
     def __init__(self):
         super().__init__("Handmaid", 4)
 
-    def action(self, other_player):
-        other_player.protected = True
+    def action(self, player, other_card_in_hand):
+        player.protected = True
         print("do Handmaid action")
 
 
@@ -92,7 +80,7 @@ class Prince(Card):
     def __init__(self):
         super().__init__("Prince", 5)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do Prince action")
 
 
@@ -103,7 +91,7 @@ class King(Card):
     def __init__(self):
         super().__init__("King", 6)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do King action")
 
 
@@ -114,7 +102,7 @@ class Countess(Card):
     def __init__(self):
         super().__init__("Countess", 7)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do Countess action")
 
 
@@ -125,11 +113,5 @@ class Princess(Card):
     def __init__(self):
         super().__init__("Princess", 8)
 
-    def action(self, other_player):
+    def action(self, player, other_card_in_hand):
         print("do Princess action")
-
-class InvalidActionError(Exception):
-    ''' Exception that is thrown when a player attempts an invalid action such as attacking another player protected by Handmaid.'''    
-    def __init__(self, message):
-        self.errorMessage = message
-
