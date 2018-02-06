@@ -6,7 +6,7 @@ Class to hold the deck - spitting this out allows us to use alternate
 """
 import random
 import itertools
-from cards import Guard,Priest,Baron,Handmaid,Prince,King,Countess,Princess 
+from cards import Guard,Priest,Baron,Handmaid,Prince,King,Countess,Princess, InvalidActionError 
 
 class Deck:
     def __init__(self, player_count=2):

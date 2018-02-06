@@ -40,19 +40,8 @@ class Game:
         player.protected = False # effect of a previously played Handmaid expires
         print("START TURN", player.id)
         if player.eliminated is False:
-            # JHA - seems to me that the action a prince would have would be
-            # to call 'discard()' on other player.  That player would be
-            # responsible for playing card, and if princess: elminated =
-            # True, else draw_card()
-            # GM: I agree, if two princes are played on the same player one after the other, the current check below is "too late".
-            if len(player.hand) is 0:  # deal with Prince
-                player.draw_a_card(self.deck)
             player.draw_a_card(self.deck)
-            # integers.  You're getting away with it due to the odd way that
-            # Python treats ints < 256
-            # if len(player.hand) is 2:  # deal with Countess
-            # you dealt with countess when you drew the card?
-            # player logic here
+            player.play_card()
             # player.hand.pop(0)
         # test for game over conditions: only one player or deck empty
         return self.more_than_one_player() and len(self.deck) > 0

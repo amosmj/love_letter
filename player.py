@@ -28,19 +28,17 @@ class Player:
                         # JHA - we have to do something different here.
                         self.hand.remove(card)
 
-    def play_card(self,other_player = None):
-        # MA - I think playing a card is a player action that invokes
-        # a card object. Many cards need a target but not all
-        # I'm guessing I could do it better than the empty string
-        # I have above but that's what I have now
-        # JHA - I think the player object should be the one deciding which
-        # card to play.  Therefore shouldn't need the params
-
-        # for now, just removing first card
-        played_card = self.hand[0]
-        played_card.action(self,other_player)
+    def play_card(self,played_card = None,other_player = None):
+        if not played_card:
+            played_card = self.hand[0]
+        if not other_player:
+            other_player = self
+        try:
+            played_card.action(other_player)
+        except InvalidActionError as error:
+            print('Ivalid Action: ' + error.errorMessage)
         print("{0} played {1}".format(self.id, played_card))
-        self.hand.pop(0)
+        self.hand.pop(self.hand.index(played_card))
 
     def __str__(self):
         return  "{0} holds {1}".format(self.id, ' and '.join(map(str,self.hand)))

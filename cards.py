@@ -115,3 +115,9 @@ class Princess(Card):
 
     def action(self, player, other_card_in_hand):
         print("do Princess action")
+
+
+class InvalidActionError(Exception):
+    ''' Exception that is thrown when a player attempts an invalid action such as attacking another player protected by Handmaid.'''
+    def __init__(self, message):
+        self.errorMessage = message
