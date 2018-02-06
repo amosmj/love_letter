@@ -26,7 +26,7 @@ class Player:
     def play_card(self,played_card = None,other_player = None):
         if not played_card:
             played_card = self.hand[0]
-        if not other_player:
+        if not other_player or played_card.power == 4: # handmaid action cannot be applied on other player
             other_player = self
         if played_card in [Prince(),King()] and Countess() in self.hand:
             self.discard_card(Countess())
