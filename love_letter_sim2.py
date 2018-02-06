@@ -31,7 +31,7 @@ class Game:
     def take_turn(self):
         player = next(self.turn_order)
         player.protected = False # effect of a previously played Handmaid expires
-        print("START TURN", player.id)
+        print("START TURN", player.name)
         if player.eliminated is False:
             player.draw_a_card(self.deck)
             player.play_card()

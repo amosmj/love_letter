@@ -45,6 +45,8 @@ class Priest(Card):
         super().__init__("Priest", 2)
 
     def action(self, other_player):
+        if not other_player.protected:
+            print ("player ",other_player.name," currently holds card ", other_player.hand[0].name)
         print("do priest action")
 
 

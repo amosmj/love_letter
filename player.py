@@ -5,8 +5,8 @@ from cards import Guard, Priest, Baron, Handmaid, Prince, King, Countess, Prince
 
 
 class Player:
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, name):
+        self.name = name
         self.hand = []
         self.protected = False
         self.eliminated = False
@@ -14,7 +14,7 @@ class Player:
 
     def draw_a_card(self, deck):
         self.hand.append(deck.draw_a_card())
-        print("{} ({})holds {}".format(self.id, self.eliminated, self.hand))
+        print("{} ({})holds {}".format(self.name, self.eliminated, self.hand))
 
     def discard_card(self,card):
         if card in self.hand:
@@ -36,9 +36,9 @@ class Player:
                 played_card.action(other_player)
             except InvalidActionError as error:
                 print('Ivalid Action: ' + error.errorMessage)
-        print("{0} played {1}".format(self.id, played_card))
+        print("{0} played {1}".format(self.name, played_card))
         self.discard_card(played_card)
 
     def __str__(self):
-        return  "{0} holds {1}".format(self.id, ' and '.join(map(str,self.hand)))
+        return  "{0} holds {1}".format(self.name, ' and '.join(map(str,self.hand)))
 
