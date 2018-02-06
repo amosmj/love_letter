@@ -16,7 +16,7 @@ class Card:
     def __str__(self):
         return "{:8}:\t{}".format(self.name, self.power)
 
-    def action(self, player, other_card_in_hand):
+    def action(self, other_player):
         # print("do {} action".format(self.name))
         pass
 

@@ -16,7 +16,7 @@ class Player:
         self.hand.append(deck.draw_a_card())
         print("{} ({})holds {}".format(self.id, self.eliminated, self.hand))
 
-    def discard_card(card):
+    def discard_card(self,card):
         if card in self.hand:
             self.hand.remove(card)
         else:
