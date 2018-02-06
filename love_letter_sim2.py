@@ -26,14 +26,7 @@ class Game:
         self.turn_order = itertools.cycle(self.players)
 
     def more_than_one_player(self):
-        # JHA - I suspect there's a fancier way to do this
-        foundFirst = False
-        for player in self.players:
-            if not player.eliminated:
-                if foundFirst:
-                    return True  # found second active player
-                foundFirst = True
-        return False
+        return len([player for player in self.players if player.eliminated == False]) > 1
 
     def take_turn(self):
         player = next(self.turn_order)
