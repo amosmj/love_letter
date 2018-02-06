@@ -42,7 +42,6 @@ class Game:
         if player.eliminated is False:
             player.draw_a_card(self.deck)
             player.play_card()
-            # player.hand.pop(0)
         # test for game over conditions: only one player or deck empty
         return self.more_than_one_player() and len(self.deck) > 0
 

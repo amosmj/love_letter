@@ -1,7 +1,7 @@
 '''
 Simple Implementation of Player object.
 '''
-from cards import Guard, Priest, Baron, Handmaid, Prince, King, Countess, Princess
+from cards import Guard, Priest, Baron, Handmaid, Prince, King, Countess, Princess, InvalidActionError
 
 
 class Player:
@@ -14,31 +14,30 @@ class Player:
 
     def draw_a_card(self, deck):
         self.hand.append(deck.draw_a_card())
-        self.check_hand()
         print("{} ({})holds {}".format(self.id, self.eliminated, self.hand))
 
-    def check_hand(self):
-        # specifically designed to deal with the Countess
-        for card in self.hand:
-            if isinstance(card, Countess):
-                # print(self.hand)
-                for c in self.hand:
-                    if isinstance(c, King) or isinstance(c, Prince):
-                        print("have to discard and end turn")
-                        # JHA - we have to do something different here.
-                        self.hand.remove(card)
+    def discard_card(card):
+        if card in self.hand:
+            self.hand.remove(card)
+        else:
+            # report a card that cannot be discarded. For now no action taken.
+            pass
 
     def play_card(self,played_card = None,other_player = None):
         if not played_card:
             played_card = self.hand[0]
         if not other_player:
             other_player = self
-        try:
-            played_card.action(other_player)
-        except InvalidActionError as error:
-            print('Ivalid Action: ' + error.errorMessage)
+        if played_card in [Prince(),King()] and Countess() in self.hand:
+            self.discard_card(Countess())
+            played_card = Countess()
+        else:
+            try:
+                played_card.action(other_player)
+            except InvalidActionError as error:
+                print('Ivalid Action: ' + error.errorMessage)
         print("{0} played {1}".format(self.id, played_card))
-        self.hand.pop(self.hand.index(played_card))
+        self.discard_card(played_card)
 
     def __str__(self):
         return  "{0} holds {1}".format(self.id, ' and '.join(map(str,self.hand)))
