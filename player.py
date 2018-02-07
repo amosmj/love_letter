@@ -30,14 +30,14 @@ class Player:
             other_player = self
         if played_card in [Prince(),King()] and Countess() in self.hand:
             self.discard_card(Countess())
-            played_card = Countess()
         else:
             try:
+                self.discard_card(played_card)
                 played_card.action(other_player)
             except InvalidActionError as error:
                 print('Ivalid Action: ' + error.errorMessage)
+                self.hand.append(played_card) # return the wrongly played card to hand.
         print("{0} played {1}".format(self.name, played_card))
-        self.discard_card(played_card)
 
     def __str__(self):
         return  "{0} holds {1}".format(self.name, ' and '.join(map(str,self.hand)))
