@@ -16,9 +16,14 @@ class Player:
         self.hand.append(deck.draw_a_card())
         print("{} ({})holds {}".format(self.name, self.eliminated, self.hand))
 
-    def discard_card(self,card):
+    def discard_card(self,card = None):
+        if not card:
+            card = self.hand[0]
         if card in self.hand:
             self.hand.remove(card)
+            if card.power == 8: # discarding the Princess eliminates the player
+                self.eliminated = True
+                print("Player ",self.name, " got eliminated by discarding the princess")
         else:
             # report a card that cannot be discarded. For now no action taken.
             pass
@@ -30,6 +35,9 @@ class Player:
             other_player = self
         if played_card in [Prince(),King()] and Countess() in self.hand:
             self.discard_card(Countess())
+        elif other_player.protected:
+            print("Action cannot be used as other player is protected by the Handmaid")
+            pass
         else:
             try:
                 self.discard_card(played_card)

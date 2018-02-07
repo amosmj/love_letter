@@ -45,8 +45,7 @@ class Priest(Card):
         super().__init__("Priest", 2)
 
     def action(self, other_player):
-        if not other_player.protected:
-            print ("player ",other_player.name," currently holds card ", other_player.hand[0].name)
+        print ("player ",other_player.name," currently holds card ", other_player.hand[0].name)
         print("do priest action")
 
 
@@ -83,6 +82,7 @@ class Prince(Card):
         super().__init__("Prince", 5)
 
     def action(self, other_player):
+        other_player.discard_card()
         print("do Prince action")
 
 
@@ -106,6 +106,7 @@ class Countess(Card):
 
     def action(self, other_player):
         print("do Countess action")
+        pass
 
 
 class Princess(Card):
