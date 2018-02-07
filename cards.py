@@ -82,7 +82,6 @@ class Prince(Card):
         super().__init__("Prince", 5)
 
     def action(self, other_player):
-        other_player.discard_card()
         print("do Prince action")
 
 
