@@ -43,11 +43,10 @@ class Deck:
     def __len__(self):
         return len(self.game_deck)
 
-    # I've debated if this is a deck action or a player action
-    # I've settled on deck for now but could see this going the other way
     def draw_a_card(self):
-        drawn_card = self.game_deck[len(self.game_deck) - 1]
-        self.game_deck.pop(len(self.game_deck) - 1)
+        if len(self.game_deck) == 0:
+            return None
+        drawn_card = self.game_deck.pop()
         # print(self.game_deck)
         # print("You drew a {}".format(drawn_card))
         return drawn_card
