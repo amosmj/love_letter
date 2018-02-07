@@ -25,6 +25,7 @@ class Deck:
         for card_type, count in card_counts:
             for card in ([card_type()] * count):
                 self.game_deck.append(card)
+                self.game_deck[-1].which_deck = self 
         random.shuffle(self.game_deck)
         # note about next steps: per game rules, with 2 players you discard
         # four cards blindly with more than 2 players you discard only one card
