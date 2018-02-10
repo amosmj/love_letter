@@ -12,6 +12,7 @@ class Card:
     def __init__(self, name, power):
         self.name = name
         self.power = power
+        self.which_deck = None
 
     def __str__(self):
         return "{:8}:\t{}".format(self.name, self.power)
