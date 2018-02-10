@@ -45,7 +45,6 @@ class Priest(Card):
         super().__init__("Priest", 2)
 
     def action(self, other_player):
-        print ("player ",other_player.name," currently holds card ", other_player.hand[0].name)
         print("do priest action")
 
 
@@ -69,7 +68,7 @@ class Handmaid(Card):
         super().__init__("Handmaid", 4)
 
     def action(self, other_player):
-        other_player.protected = True
+        player.protected = True
         print("do Handmaid action")
 
 
