@@ -104,6 +104,7 @@ class Countess(Card):
 
     def action(self, other_player):
         print("do Countess action")
+        pass
 
 
 class Princess(Card):

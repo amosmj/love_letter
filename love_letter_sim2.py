@@ -26,23 +26,15 @@ class Game:
         self.turn_order = itertools.cycle(self.players)
 
     def more_than_one_player(self):
-        # JHA - I suspect there's a fancier way to do this
-        foundFirst = False
-        for player in self.players:
-            if not player.eliminated:
-                if foundFirst:
-                    return True  # found second active player
-                foundFirst = True
-        return False
+        return len([player for player in self.players if player.eliminated == False]) > 1
 
     def take_turn(self):
         player = next(self.turn_order)
         player.protected = False # effect of a previously played Handmaid expires
-        print("START TURN", player.id)
+        print("START TURN", player.name)
         if player.eliminated is False:
             player.draw_a_card(self.deck)
             player.play_card()
-            # player.hand.pop(0)
         # test for game over conditions: only one player or deck empty
         return self.more_than_one_player() and len(self.deck) > 0
 
