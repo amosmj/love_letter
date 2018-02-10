@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 """
-This is a supporting module of love_letter_sim2 providing class description of the cards
+Cards for Love Letters Game.
 """
+
 
 class Card:
     '''  NOTE: we should really make this class an abstract base class, but I'm
@@ -16,19 +17,6 @@ class Card:
         return "{:8}:\t{}".format(self.name, self.power)
 
     def action(self, other_player):
-        ''' Mike - this is the thought I had, but it's not playing out as
-        cleanly as I would have hoped.  THe part of this whole thing that I
-        don't have in my head is "how does the player decide which card to play
-        against which other player AND which guess to make".  One interesting
-        thought: I'm used to C++ where ALL overridden functions in subclasses
-        need to have the same parameters (unless you do something special).
-        It seems the action method on each card could be unique.  The player
-        already will need to know which card she is playing and therefore
-        can send the proper parameters (i.e. Guard will take (player, guess)
-        while priest will just take player.)  The return values might need
-        to be different as well.  Priest will return card value, others  will
-        return ???
-        '''
         # print("do {} action".format(self.name))
         pass
 
@@ -80,7 +68,7 @@ class Handmaid(Card):
         super().__init__("Handmaid", 4)
 
     def action(self, other_player):
-        other_player.protected = True
+        player.protected = True
         print("do Handmaid action")
 
 
@@ -128,8 +116,8 @@ class Princess(Card):
     def action(self, other_player):
         print("do Princess action")
 
+
 class InvalidActionError(Exception):
-    ''' Exception that is thrown when a player attempts an invalid action such as attacking another player protected by Handmaid.'''    
+    ''' Exception that is thrown when a player attempts an invalid action such as attacking another player protected by Handmaid.'''
     def __init__(self, message):
         self.errorMessage = message
-
